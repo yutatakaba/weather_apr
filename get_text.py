@@ -1,4 +1,6 @@
 from get_url import GetUrl
+import requests
+from bs4 import BeautifulSoup
 
 
 class GetText():
@@ -16,4 +18,12 @@ class GetText():
 		if url is None:
 			return err_text
 		# else:
-		# 	text =
+
+	def get_info(self, url):
+		html = requests.get(url)
+		soup = BeautifulSoup(html.text, "html.parser")
+		text_list = soup.select("#main > div > p")
+		text_sorce = str(text_list[0])
+		text = text_sorce.strip('<p class="gaikyo">').strip('</p>').replace('<br/>\n', '')
+		return text
+
